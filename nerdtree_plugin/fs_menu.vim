@@ -461,7 +461,13 @@ function! NERDTreeExecuteFileWindows()
         return
     endif
 
-    call system('cmd.exe /c start "" ' . shellescape(l:node.path.str()))
+    if stridx(&shell, "bash") > -1
+        let l:cmd = 'start ' . shellescape(l:node.path.str())
+        exe ":!".l:cmd
+    else
+        let l:cmd = 'cmd.exe /c start "" ' . shellescape(l:node.path.str())
+        call system(l:cmd)
+    endif
 endfunction
 
 " FUNCTION: NERDTreeSystemCommand() {{{1
